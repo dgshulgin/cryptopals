@@ -12,7 +12,7 @@ const (
 	baseMime string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 )
 
-func decode(input []byte) (out []byte, err error) {
+func decodeMime(input []byte) (out []byte, err error) {
 	// bytes0 6 верхних байт
 	b1 := input[0] >> 2
 	rr, _ := utf8.DecodeRuneInString(baseMime[b1:])
@@ -48,7 +48,7 @@ func decode(input []byte) (out []byte, err error) {
 
 	return out, nil
 }
-func Hex2Base64(input []byte) (out []byte, err error) {
+func Hex2Base64Mime(input []byte) (out []byte, err error) {
 	pos := 0
 	for {
 		if len(input[pos:]) <= 0 {
@@ -58,7 +58,7 @@ func Hex2Base64(input []byte) (out []byte, err error) {
 		w := copy(triple, input[pos:])
 
 		// ...преобразуются в соотв с таблицей baseMime
-		dec, err := decode(triple)
+		dec, err := decodeMime(triple)
 		if err != nil {
 			return []byte{}, err
 		}
